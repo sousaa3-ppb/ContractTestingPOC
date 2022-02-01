@@ -16,7 +16,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>14</java.version>
+        <java.version>8</java.version>
         <pact.version>4.2.7</pact.version>
         <pact.maven.plugin.version>4.0.10</pact.maven.plugin.version>
         <lombok.version>1.18.20</lombok.version>
