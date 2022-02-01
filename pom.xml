@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.sousaa3</groupId>
+    <artifactId>pact-example-acca-stats</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <description>POC Contract Testing using Pact Broker docker image  2 spring boot services</description>
+    <modules>
+        <module>konami-all-day-agendas-provider-service</module>
+        <module>pedo-bear-consumer-service</module>
+    </modules>
+</project>
