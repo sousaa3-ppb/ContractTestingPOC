@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.sousaa3</groupId>
-    <artifactId>pact-example-acca-stats</artifactId>
+    <artifactId>consumer-driven-ct-poc</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <description>POC Contract Testing using Pact Broker docker image  2 spring boot services</description>

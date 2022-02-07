@@ -13,8 +13,9 @@ public class KonamiAgendaController {
     }
 
     @GetMapping("/sprint/{id}")
-    public Agenda getAgenda(@PathVariable String id) {
+    public Agenda getAgenda(@PathVariable int id) {
 
+        System.out.println("Fui chamado");
         return konamiAgendaService.getAgenda(id);
     }
 

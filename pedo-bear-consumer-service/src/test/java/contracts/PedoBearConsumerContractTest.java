@@ -7,6 +7,10 @@ import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.model.RequestResponsePact;
 import pedobear.KonamiAgendasProviderClient;
 import pedobear.Agenda;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -32,11 +36,15 @@ public class PedoBearConsumerContractTest extends ConsumerPactTestMk2{
                 .stringType("retrospective")
                 .stringType("sharingsession");
 
+        Map<String,String> headers = new HashMap<String,String>();
+        headers.put("Content-Type", "application/json");
+
         return builder.uponReceiving("can get Konami All-Day Agenda")
                 .path(String.format("/sprint/%s", 104))
                 .method("GET")
                 .willRespondWith()
                 .status(200)
+                .headers(headers)
                 .body(body)
                 .toPact();
     }
@@ -44,7 +52,6 @@ public class PedoBearConsumerContractTest extends ConsumerPactTestMk2{
     @Override
     protected void runTest(MockServer mockServer) {
 
-        System.out.println("Passei aqui");
         Agenda response = new KonamiAgendasProviderClient(mockServer.getUrl()).getAgenda("104");
         assertThat((response.getSprintId())).isEqualTo(104);
 
