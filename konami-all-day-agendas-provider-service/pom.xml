@@ -17,9 +17,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>8</java.version>
-        <pact.version>4.2.7</pact.version>
         <pact.maven.plugin.version>4.0.10</pact.maven.plugin.version>
         <lombok.version>1.18.20</lombok.version>
+        <pact.version>4.2.7</pact.version>
     </properties>
 
     <dependencies>
@@ -49,30 +49,15 @@
         </dependency>
 
         <dependency>
-            <groupId>au.com.dius.pact</groupId>
-            <artifactId>provider</artifactId>
-            <version>${pact.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>au.com.dius.pact.provider</groupId>
-            <artifactId>junit</artifactId>
-            <version>${pact.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>au.com.dius.pact.provider</groupId>
-            <artifactId>spring</artifactId>
-            <version>${pact.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>au.com.dius</groupId>
+            <artifactId>pact-jvm-provider-spring_2.12</artifactId>
+            <version>3.5.23</version>
         </dependency>
 
     </dependencies>
@@ -80,16 +65,18 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>au.com.dius</groupId>
-                <artifactId>pact-jvm-provider-maven</artifactId>
-                <version>${pact.maven.plugin.version}</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
-                    <pactBrokerUrl>localhost</pactBrokerUrl>
-                    <pactBrokerToken>HbtH0tZq7CU4d18JlKR2kA</pactBrokerToken>
-                    <pactBrokerAuthenticationScheme>Bearer</pactBrokerAuthenticationScheme>
+                    <systemPropertyVariables>
+                        <pact.verifier.publishResults>true</pact.verifier.publishResults>
+                        <pact.provider.version>${project.version}</pact.provider.version>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
+
 
 </project>
