@@ -6,6 +6,12 @@ framework.
 - Spring boot provider service: to implement contract verification tests 
 - Docker to spin up an image of Pact Broker to publish and retrieve pacts 
 
+##Maven commands
+
+Publish contracts to Pact Broken instance running on Docker: **mvn verify pact:publish**
+
+
+
 Enhancements in progress: 
 
 - Authentication token on consumer contract tests 
