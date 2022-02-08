@@ -1,10 +1,15 @@
 package contracts;
 
-import au.com.dius.pact.consumer.ConsumerPactTestMk2;
 import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.model.RequestResponsePact;
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
+import au.com.dius.pact.consumer.junit5.PactTestFor;
+import au.com.dius.pact.core.model.RequestResponsePact;
+import au.com.dius.pact.core.model.annotations.Pact;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import pedobear.KonamiAgendasProviderClient;
 import pedobear.Agenda;
 
@@ -13,20 +18,11 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ExtendWith(PactConsumerTestExt.class)
+@PactTestFor(providerName = "konami-agendas-provider")
+public class PedoBearConsumerContractTest{
 
-public class PedoBearConsumerContractTest extends ConsumerPactTestMk2{
-
-    @Override
-    protected String providerName() {
-        return "konami-agendas-provider";
-    }
-
-    @Override
-    protected String consumerName() {
-        return "pedo-bear-consumer";
-    }
-
-    @Override
+    @Pact(consumer = "pedo-bear-consumer")
     protected RequestResponsePact createPact(PactDslWithProvider builder) {
         PactDslJsonBody body = new PactDslJsonBody()
                 .integerType("sprintId",104)
@@ -49,8 +45,10 @@ public class PedoBearConsumerContractTest extends ConsumerPactTestMk2{
                 .toPact();
     }
 
-    @Override
-    protected void runTest(MockServer mockServer) {
+    @Test
+    @PactTestFor(pactMethod = "createPact")
+     void runTest(MockServer mockServer) {
+
 
         Agenda response = new KonamiAgendasProviderClient(mockServer.getUrl()).getAgenda("104");
         assertThat((response.getSprintId())).isEqualTo(104);
