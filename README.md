@@ -6,10 +6,13 @@ framework.
 - Spring boot provider service: to implement contract verification tests with Pact Sprint/Junit Runners
 - Docker to spin up an image of Pact Broker to publish and retrieve pacts 
 
-##Maven commands
+#CDCT Pact flow
+
+![pactflow](/docs/pact_flow.png)
+
+#Maven commands
 
 Publish contracts to Pact Broken instance running on Docker: **mvn verify pact:publish**
-
 
 
 Enhancements in progress: 
