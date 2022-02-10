@@ -19,10 +19,9 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(PactConsumerTestExt.class)
-@PactTestFor(providerName = "konami-agendas-provider")
 public class PedoBearConsumerContractTest{
 
-    @Pact(consumer = "pedo-bear-consumer")
+    @Pact(provider = "konami-agendas-provider",consumer = "pedo-bear-consumer")
     protected RequestResponsePact createPact(PactDslWithProvider builder) {
         PactDslJsonBody body = new PactDslJsonBody()
                 .integerType("sprintId",104)
