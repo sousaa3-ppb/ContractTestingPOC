@@ -3,6 +3,8 @@ package provider;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class KonamiAgendaController {
 
@@ -16,6 +18,12 @@ public class KonamiAgendaController {
     public Agenda getAgenda(@PathVariable int id) {
 
         return konamiAgendaService.getAgenda(id);
+    }
+
+    @GetMapping("agendas/sprint/all")
+    public AgendaList getAllAgendas(){
+
+        return konamiAgendaService.getAll();
     }
 
 }

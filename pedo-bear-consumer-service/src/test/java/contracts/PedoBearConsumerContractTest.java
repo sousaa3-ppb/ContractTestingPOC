@@ -3,6 +3,7 @@ package contracts;
 import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
+import au.com.dius.pact.consumer.dsl.PactDslWithState;
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.RequestResponsePact;
@@ -10,6 +11,7 @@ import au.com.dius.pact.core.model.annotations.Pact;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import pedobear.AgendaList;
 import pedobear.KonamiAgendasProviderClient;
 import pedobear.Agenda;
 
@@ -24,18 +26,24 @@ public class PedoBearConsumerContractTest{
     @Pact(provider = "konami-agendas-provider",consumer = "pedo-bear-consumer")
     protected RequestResponsePact createPact(PactDslWithProvider builder) {
         PactDslJsonBody body = new PactDslJsonBody()
-                .integerType("sprintId",104)
+                .integerType("sprintId",105)
+                .stringType("description")
+                .stringType("date")
+                .object("ceremonies")
                 .stringType("refinement")
                 .stringType("planning")
                 .stringType("lunch")
                 .stringType("retrospective")
-                .stringType("sharingsession");
+                .stringType("sharingsessions")
+                .closeObject().asBody();
 
         Map<String,String> headers = new HashMap<String,String>();
         headers.put("Content-Type", "application/json");
 
-        return builder.uponReceiving("can get Konami All-Day Agenda")
-                .path(String.format("/sprint/%s", 104))
+        return builder
+                .uponReceiving("get Konami All-Day Agenda")
+                .path("/sprint")
+                .matchPath("/sprint/[0-9]+","/sprint/105")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
@@ -44,13 +52,53 @@ public class PedoBearConsumerContractTest{
                 .toPact();
     }
 
+    @Pact(provider = "konami-agendas-provider",consumer = "pedo-bear-consumer")
+    protected RequestResponsePact getAllAgendasPact(PactDslWithProvider builder) {
+
+        PactDslJsonBody agendasBody = new PactDslJsonBody()
+                .minArrayLike("agendas",2)
+                .integerType("sprintId")
+                .stringType("description")
+                .stringType("date")
+                .object("ceremonies")
+                .stringType("refinement")
+                .stringType("planning")
+                .stringType("lunch")
+                .stringType("retrospective")
+                .stringType("sharingsessions")
+                .closeObject().closeArray().asBody();
+
+
+        Map<String,String> headers = new HashMap<String,String>();
+        headers.put("Content-Type", "application/json");
+
+        return builder
+                .uponReceiving("get all agendas")
+                .path("/agendas/sprint/all")
+                .method("GET")
+                .willRespondWith()
+                .status(200)
+                .headers(headers)
+                .body(agendasBody)
+                .toPact();
+    }
+
     @Test
     @PactTestFor(pactMethod = "createPact")
      void runTest(MockServer mockServer) {
 
 
-        Agenda response = new KonamiAgendasProviderClient(mockServer.getUrl()).getAgenda("104");
-        assertThat((response.getSprintId())).isEqualTo(104);
+        Agenda response = new KonamiAgendasProviderClient(mockServer.getUrl()).getAgenda("105");
+        assertThat((response.getSprintId())).isEqualTo(105);
+
+    }
+
+    @Test
+    @PactTestFor(pactMethod = "getAllAgendasPact")
+    void runTest2(MockServer mockServer) {
+
+
+        AgendaList response = new KonamiAgendasProviderClient(mockServer.getUrl()).getAllAgendas();
 
 
     }
