@@ -16,12 +16,12 @@ public class KonamiAgendasProviderClient {
 
     public Agenda getAgenda(String sprintID)
     {
-        return restTemplate.getForObject(String.format("/sprint/%s", sprintID), Agenda.class);
+        return restTemplate.getForObject(String.format("/agendas/sprint/%s", sprintID), Agenda.class);
     }
 
     public AgendaList getAllAgendas()
     {
-        return restTemplate.getForObject(String.format("/agendas/sprint/all"), AgendaList.class);
+        return restTemplate.getForObject(String.format("/agendas"), AgendaList.class);
     }
 
 

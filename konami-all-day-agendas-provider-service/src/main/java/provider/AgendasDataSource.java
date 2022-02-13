@@ -1,5 +1,6 @@
 package provider;
 
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.collections4.map.HashedMap;
 import org.checkerframework.checker.units.qual.A;
 
@@ -7,20 +8,13 @@ import java.util.*;
 
 public class AgendasDataSource {
 
-
-    public AgendasDataSource(){
-
-
-
-    }
-
-    public Agenda getAgendaFromDataBaseByID(int id)
-    {
+    private static Map<Integer,Agenda> agendasDataBase = new HashMap<>();
+    static {
         Agenda agenda = new Agenda();
-        agenda.setSprintId(id);
-        agenda.setDescription("Konami All Day Agenda for sprint 104");
-        agenda.setDate("18/02/2022");
-        Map <String,String> ceremoniesData = new HashMap<String,String>();
+        agenda.setSprintId(999);
+        agenda.setDescription("Konami All Day Agenda for sprint 999");
+        agenda.setDate("18/02/2050");
+        Map<String,String> ceremoniesData = new LinkedHashMap<>();
         ceremoniesData.put("refinement","09:30");
         ceremoniesData.put("planning","10:30");
         ceremoniesData.put("lunch","12:00");
@@ -28,46 +22,49 @@ public class AgendasDataSource {
         ceremoniesData.put("sharingsessions","15:00");
         agenda.setCeremonies(ceremoniesData);
 
+        Agenda agenda2 = new Agenda();
+        agenda2.setSprintId(1000);
+        agenda2.setDescription("Konami All Day Agenda for sprint 1000");
+        agenda2.setDate("18/02/2050");
+        Map<String,String> ceremoniesData2 = new LinkedHashMap<>();
+        ceremoniesData2.put("refinement","09:30");
+        ceremoniesData2.put("planning","10:30");
+        ceremoniesData2.put("lunch","12:00");
+        ceremoniesData2.put("retrospective","14:00");
+        ceremoniesData2.put("sharingsessions","15:00");
+        agenda2.setCeremonies(ceremoniesData);
 
-        return agenda;
+        agendasDataBase.put(999,agenda);
+        agendasDataBase.put(1000,agenda2);
+    }
 
+    public Agenda getAgendaFromDataBaseByID(int id)
+    {
+
+        System.out.println("Getting Agenda from SprintId: "+id);
+        return agendasDataBase.get(id);
     }
 
     public AgendaList getAllAgendas()
     {
-        Agenda agenda1 = new Agenda();
-        agenda1.setSprintId(103);
-        agenda1.setDate("18/01/2022");
-        agenda1.setDescription("Konami All Day Agenda for sprint 1000");
-        Map <String,String> ceremoniesAgenda1 = new LinkedHashMap();
-        ceremoniesAgenda1.put("refinement","09:30");
-        ceremoniesAgenda1.put("planning","10:30");
-        ceremoniesAgenda1.put("lunch","12:00");
-        ceremoniesAgenda1.put("retrospective","14:00");
-        ceremoniesAgenda1.put("sharingsessions","15:00");
-        agenda1.setCeremonies(ceremoniesAgenda1);
-
-        Agenda agenda2 = new Agenda();
-        agenda2.setSprintId(104);
-        agenda2.setDate("31/01/2022");
-        agenda2.setDescription("Konami All Day Agenda for sprint 1001");
-        Map <String,String> ceremoniesAgenda2 = new LinkedHashMap();
-        ceremoniesAgenda2.put("refinement","09:30");
-        ceremoniesAgenda2.put("planning","10:30");
-        ceremoniesAgenda2.put("lunch","12:00");
-        ceremoniesAgenda2.put("retrospective","14:00");
-        ceremoniesAgenda2.put("sharingsessions","N/A");
-        agenda2.setCeremonies(ceremoniesAgenda2);
-
         List<Agenda> newList = new ArrayList();
-        newList.add(agenda1);
-        newList.add(agenda2);
+
+        agendasDataBase.values().forEach(agenda -> {
+            System.out.println("Printing:"+agenda.getSprintId());
+            newList.add(agenda);
+
+        });
 
         AgendaList agendas = new AgendaList(newList);
 
-
-
         return agendas;
+    }
+
+    public void createAgendaOnDataSource(Agenda newAgenda){
+
+        Integer key = newAgenda.getSprintId();
+        agendasDataBase.put(key,newAgenda);
+
     }
 
 }

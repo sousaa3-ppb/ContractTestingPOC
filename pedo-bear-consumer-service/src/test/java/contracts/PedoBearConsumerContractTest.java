@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PedoBearConsumerContractTest{
 
     @Pact(provider = "konami-agendas-provider",consumer = "pedo-bear-consumer")
-    protected RequestResponsePact createPact(PactDslWithProvider builder) {
+    protected RequestResponsePact getAgendaBySprintID(PactDslWithProvider builder) {
         PactDslJsonBody body = new PactDslJsonBody()
                 .integerType("sprintId",105)
                 .stringType("description")
@@ -41,9 +41,9 @@ public class PedoBearConsumerContractTest{
         headers.put("Content-Type", "application/json");
 
         return builder
-                .uponReceiving("get Konami All-Day Agenda")
-                .path("/sprint")
-                .matchPath("/sprint/[0-9]+","/sprint/105")
+                .given("Agenda for sprint 105")
+                .uponReceiving("get Konami All-Day Agenda 105")
+                .path("/agendas/sprint/105")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
@@ -73,8 +73,9 @@ public class PedoBearConsumerContractTest{
         headers.put("Content-Type", "application/json");
 
         return builder
+                .given("a list of existing agendas")
                 .uponReceiving("get all agendas")
-                .path("/agendas/sprint/all")
+                .path("/agendas")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
@@ -84,9 +85,8 @@ public class PedoBearConsumerContractTest{
     }
 
     @Test
-    @PactTestFor(pactMethod = "createPact")
-     void runTest(MockServer mockServer) {
-
+    @PactTestFor(pactMethod = "getAgendaBySprintID")
+     void shouldGetAgenda(MockServer mockServer) {
 
         Agenda response = new KonamiAgendasProviderClient(mockServer.getUrl()).getAgenda("105");
         assertThat((response.getSprintId())).isEqualTo(105);
@@ -95,7 +95,7 @@ public class PedoBearConsumerContractTest{
 
     @Test
     @PactTestFor(pactMethod = "getAllAgendasPact")
-    void runTest2(MockServer mockServer) {
+    void shouldGetAgendasList(MockServer mockServer) {
 
 
         AgendaList response = new KonamiAgendasProviderClient(mockServer.getUrl()).getAllAgendas();

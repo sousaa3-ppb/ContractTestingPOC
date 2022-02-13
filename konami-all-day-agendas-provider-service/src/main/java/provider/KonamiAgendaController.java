@@ -14,13 +14,13 @@ public class KonamiAgendaController {
         this.konamiAgendaService = konamiAgendaService;
     }
 
-    @GetMapping("/sprint/{id}")
+    @GetMapping("agendas/sprint/{id}")
     public Agenda getAgenda(@PathVariable int id) {
 
         return konamiAgendaService.getAgenda(id);
     }
 
-    @GetMapping("agendas/sprint/all")
+    @GetMapping("agendas")
     public AgendaList getAllAgendas(){
 
         return konamiAgendaService.getAll();

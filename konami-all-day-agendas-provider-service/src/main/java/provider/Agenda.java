@@ -9,6 +9,17 @@ public class Agenda {
     private String date;
     private Map<String,String> ceremonies;
 
+    public Agenda(){
+
+    }
+
+    public Agenda(int sprintId, String description, String date, Map<String,String> ceremonies){
+        this.sprintId = sprintId;
+        this.description = description;
+        this.date = date;
+        this.ceremonies = ceremonies;
+    }
+
     public int getSprintId() {
         return sprintId;
     }
