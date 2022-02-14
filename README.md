@@ -55,6 +55,10 @@ Getting Agenda from SprintId: 105
 * provider body field + 
 * consumer body field - 
 
+**PathMismatch**
+
+20:41:54.168 [Thread-4] DEBUG au.com.dius.pact.core.matchers.RequestMatching - Request mismatch: [PathMismatch(expected=agendas/sprint/105, actual=/agendas/sprint/105, mismatch=null)]
+
 # Future
 
 Enhancements in progress: 

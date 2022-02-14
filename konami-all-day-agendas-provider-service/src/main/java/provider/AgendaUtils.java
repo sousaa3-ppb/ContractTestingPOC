@@ -18,11 +18,11 @@ public class AgendaUtils {
 
     }
 
-    public String createAgendaWithId(int sprintId){
+    public int createAgenda(){
 
         Agenda newAgenda = new Agenda();
-        newAgenda.setSprintId(sprintId);
         newAgenda.setDate("18/02/2022");
+        newAgenda.setDescription("Konami All Day agenda for sprint "+newAgenda.getSprintId());
         Map<String,String> ceremoniesData = new LinkedHashMap<>();
         ceremoniesData.put("refinement","09:30");
         ceremoniesData.put("planning","10:30");
@@ -33,9 +33,7 @@ public class AgendaUtils {
 
         dataSource.createAgendaOnDataSource(newAgenda);
 
-
-
-        return newAgenda.getUuid();
+        return newAgenda.getSprintId();
 
 
 

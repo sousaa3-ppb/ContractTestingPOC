@@ -1,6 +1,5 @@
 package provider;
 
-import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -15,6 +14,8 @@ public class Agenda {
 
     public Agenda(){
 
+        int random = getRandomNumberUsingNextInt(100,1000);
+        this.sprintId = random;
         this.uuid = UUID.randomUUID().toString();
 
     }
@@ -65,4 +66,10 @@ public class Agenda {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+
+    public int getRandomNumberUsingNextInt(int min, int max) {
+        Random random = new Random();
+        return random.nextInt(max - min) + min;
+    }
+
 }

@@ -1,9 +1,5 @@
 package provider;
 
-import com.google.common.collect.ImmutableMap;
-import org.apache.commons.collections4.map.HashedMap;
-import org.checkerframework.checker.units.qual.A;
-
 import java.util.*;
 
 public class AgendasDataSource {
@@ -11,8 +7,7 @@ public class AgendasDataSource {
     private static Map<Integer,Agenda> agendasDataBase = new HashMap<>();
     static {
         Agenda agenda = new Agenda();
-        agenda.setSprintId(999);
-        agenda.setDescription("Konami All Day Agenda for sprint 999");
+        agenda.setDescription("Konami All Day Agenda for sprint "+agenda.getSprintId());
         agenda.setDate("18/02/2050");
         Map<String,String> ceremoniesData = new LinkedHashMap<>();
         ceremoniesData.put("refinement","09:30");
@@ -23,8 +18,7 @@ public class AgendasDataSource {
         agenda.setCeremonies(ceremoniesData);
 
         Agenda agenda2 = new Agenda();
-        agenda2.setSprintId(1000);
-        agenda2.setDescription("Konami All Day Agenda for sprint 1000");
+        agenda2.setDescription("Konami All Day Agenda for sprint "+agenda2.getSprintId());
         agenda2.setDate("18/02/2050");
         Map<String,String> ceremoniesData2 = new LinkedHashMap<>();
         ceremoniesData2.put("refinement","09:30");
@@ -34,8 +28,8 @@ public class AgendasDataSource {
         ceremoniesData2.put("sharingsessions","15:00");
         agenda2.setCeremonies(ceremoniesData);
 
-        agendasDataBase.put(999,agenda);
-        agendasDataBase.put(1000,agenda2);
+        agendasDataBase.put(agenda.getSprintId(),agenda);
+        agendasDataBase.put(agenda2.getSprintId(),agenda2);
     }
 
     public Agenda getAgendaFromDataBaseByID(int id)
@@ -63,9 +57,8 @@ public class AgendasDataSource {
     public void createAgendaOnDataSource(Agenda newAgenda){
 
         Integer key = newAgenda.getSprintId();
-        System.out.println("New agenda with: "+newAgenda.getUuid());
+        System.out.println("New agenda with: "+newAgenda.getSprintId());
         agendasDataBase.put(key,newAgenda);
 
     }
-
 }

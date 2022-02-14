@@ -2,8 +2,6 @@ package provider;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class KonamiAgendaService {
 
@@ -23,4 +21,5 @@ public class KonamiAgendaService {
     {
         return dataSource.getAllAgendas();
     }
+
 }

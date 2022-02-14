@@ -3,7 +3,6 @@ package contracts;
 import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.consumer.dsl.PactDslWithState;
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.RequestResponsePact;
@@ -27,11 +26,10 @@ public class PedoBearConsumerContractTest{
     @Pact(provider = "konami-agendas-provider",consumer = "pedo-bear-consumer")
     protected RequestResponsePact getAgendaBySprintID(PactDslWithProvider builder) {
         PactDslJsonBody body = new PactDslJsonBody()
-                .valueFromProviderState("uuid","uuid","243f3214-58da-4223-8b1a-95aab51dce9d")
                 .integerType("sprintId",105)
                 .stringType("date")
                 .object("ceremonies")
-                .stringType("refinement")
+                .stringMatcher("refinement","[0-9][0-9]:[0-9][0-9]","09:30")
                 .stringType("planning")
                 .stringType("lunch")
                 .stringType("retrospective")
@@ -43,9 +41,9 @@ public class PedoBearConsumerContractTest{
         headers.put("Content-Type", "application/json");
 
         return builder
-                .given("Agenda for sprint 105")
-                .uponReceiving("get Konami All-Day Agenda 105")
-                .path("/agendas/sprint/105")
+                .given("exists an Agenda for a given sprint")
+                .uponReceiving("a request to retrieve an agenda")
+                .pathFromProviderState("/agendas/sprint/${id}","/agendas/sprint/105")
                 .method("GET")
                 .willRespondWith()
                 .status(200)

@@ -28,22 +28,21 @@ public class AgendaDataProviderContractTest {
 @TestTarget
 public final Target target = new SpringBootHttpTarget();
 
-@State(value = "Agenda for sprint 105",action = StateChangeAction.SETUP)
+@State(value = "exists an Agenda for a given sprint",action = StateChangeAction.SETUP)
     public Map<String,Object> createAgenda(Map<String,Object> params){
 
-       Map<String,Object> mapUUID = new HashMap<>();
-            String uuid = utils.createAgendaWithId(105);
-       mapUUID.put("uuid",uuid);
+       Map<String,Object> mapSprintID = new HashMap<>();
+       int sprintID = utils.createAgenda();
+       mapSprintID.put("id",sprintID);
 
-       System.out.println("UUID generated at callback provider state: "+uuid);
-       return mapUUID;
+       System.out.println("SprintID generated at callback provider state: "+sprintID);
+       return mapSprintID;
 }
 
     @State(value = "a list of existing agendas",action = StateChangeAction.SETUP)
     public void createAgendasList(){
 
         Agenda agenda1 = new Agenda();
-        agenda1.setSprintId(103);
         agenda1.setDate("18/01/2022");
         agenda1.setDescription("Konami All Day Agenda for sprint 1000");
         Map <String,String> ceremoniesAgenda1 = new LinkedHashMap();
@@ -55,7 +54,6 @@ public final Target target = new SpringBootHttpTarget();
         agenda1.setCeremonies(ceremoniesAgenda1);
 
         Agenda agenda2 = new Agenda();
-        agenda2.setSprintId(104);
         agenda2.setDate("31/01/2022");
         agenda2.setDescription("Konami All Day Agenda for sprint 1001");
         Map <String,String> ceremoniesAgenda2 = new LinkedHashMap();
