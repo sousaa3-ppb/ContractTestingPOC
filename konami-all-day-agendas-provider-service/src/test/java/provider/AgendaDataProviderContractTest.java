@@ -11,9 +11,11 @@ import au.com.dius.pact.provider.spring.target.SpringBootHttpTarget;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.print.attribute.HashAttributeSet;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RunWith(SpringRestPactRunner.class)
 @Provider("konami-agendas-provider")
@@ -27,23 +29,14 @@ public class AgendaDataProviderContractTest {
 public final Target target = new SpringBootHttpTarget();
 
 @State(value = "Agenda for sprint 105",action = StateChangeAction.SETUP)
-    public void createAgenda(){
+    public Map<String,Object> createAgenda(Map<String,Object> params){
 
-       Agenda agenda = new Agenda();
-       agenda.setSprintId(105);
-       agenda.setDescription("Konami All Day Agenda for sprint 105");
-       agenda.setDate("18/02/2022");
-       Map<String,String> ceremoniesData = new LinkedHashMap();
-       ceremoniesData.put("refinement","09:30");
-       ceremoniesData.put("planning","10:30");
-       ceremoniesData.put("lunch","12:00");
-       ceremoniesData.put("retrospective","14:00");
-       ceremoniesData.put("sharingsessions","15:00");
-       agenda.setCeremonies(ceremoniesData);
+       Map<String,Object> mapUUID = new HashMap<>();
+            String uuid = utils.createAgendaWithId(105);
+       mapUUID.put("uuid",uuid);
 
-       utils.createAgenda(agenda);
-
-
+       System.out.println("UUID generated at callback provider state: "+uuid);
+       return mapUUID;
 }
 
     @State(value = "a list of existing agendas",action = StateChangeAction.SETUP)

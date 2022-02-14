@@ -17,6 +17,7 @@ import pedobear.Agenda;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,8 +27,8 @@ public class PedoBearConsumerContractTest{
     @Pact(provider = "konami-agendas-provider",consumer = "pedo-bear-consumer")
     protected RequestResponsePact getAgendaBySprintID(PactDslWithProvider builder) {
         PactDslJsonBody body = new PactDslJsonBody()
+                .valueFromProviderState("uuid","uuid","243f3214-58da-4223-8b1a-95aab51dce9d")
                 .integerType("sprintId",105)
-                .stringType("description")
                 .stringType("date")
                 .object("ceremonies")
                 .stringType("refinement")
@@ -35,7 +36,8 @@ public class PedoBearConsumerContractTest{
                 .stringType("lunch")
                 .stringType("retrospective")
                 .stringType("sharingsessions")
-                .closeObject().asBody();
+                .closeObject()
+                .asBody();
 
         Map<String,String> headers = new HashMap<String,String>();
         headers.put("Content-Type", "application/json");
@@ -58,7 +60,6 @@ public class PedoBearConsumerContractTest{
         PactDslJsonBody agendasBody = new PactDslJsonBody()
                 .minArrayLike("agendas",2)
                 .integerType("sprintId")
-                .stringType("description")
                 .stringType("date")
                 .object("ceremonies")
                 .stringType("refinement")

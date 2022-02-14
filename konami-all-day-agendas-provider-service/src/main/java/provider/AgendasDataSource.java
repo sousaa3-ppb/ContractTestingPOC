@@ -50,7 +50,7 @@ public class AgendasDataSource {
         List<Agenda> newList = new ArrayList();
 
         agendasDataBase.values().forEach(agenda -> {
-            System.out.println("Printing:"+agenda.getSprintId());
+            System.out.println("Printing:"+agenda.getSprintId()+" : "+agenda.getUuid());
             newList.add(agenda);
 
         });
@@ -63,6 +63,7 @@ public class AgendasDataSource {
     public void createAgendaOnDataSource(Agenda newAgenda){
 
         Integer key = newAgenda.getSprintId();
+        System.out.println("New agenda with: "+newAgenda.getUuid());
         agendasDataBase.put(key,newAgenda);
 
     }
