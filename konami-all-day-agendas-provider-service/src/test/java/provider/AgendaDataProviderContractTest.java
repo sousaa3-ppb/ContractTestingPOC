@@ -11,11 +11,10 @@ import au.com.dius.pact.provider.spring.target.SpringBootHttpTarget;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.print.attribute.HashAttributeSet;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.UUID;
+
 
 @RunWith(SpringRestPactRunner.class)
 @Provider("konami-agendas-provider")
@@ -31,16 +30,22 @@ public final Target target = new SpringBootHttpTarget();
 @State(value = "exists an Agenda for a given sprint",action = StateChangeAction.SETUP)
     public Map<String,Object> createAgenda(Map<String,Object> params){
 
+       System.out.println("Setting up an Agenda");
+
        Map<String,Object> mapSprintID = new HashMap<>();
+
        int sprintID = utils.createAgenda();
        mapSprintID.put("id",sprintID);
 
        System.out.println("SprintID generated at callback provider state: "+sprintID);
+
        return mapSprintID;
 }
 
-    @State(value = "a list of existing agendas",action = StateChangeAction.SETUP)
+@State(value = "a list of existing agendas",action = StateChangeAction.SETUP)
     public void createAgendasList(){
+
+    System.out.println("Setting up a list of Agendas");
 
         Agenda agenda1 = new Agenda();
         agenda1.setDate("18/01/2022");
@@ -61,7 +66,7 @@ public final Target target = new SpringBootHttpTarget();
         ceremoniesAgenda2.put("planning","10:30");
         ceremoniesAgenda2.put("lunch","12:00");
         ceremoniesAgenda2.put("retrospective","14:00");
-        ceremoniesAgenda2.put("sharingsessions","N/A");
+        ceremoniesAgenda2.put("sharingsessions","15:00");
         agenda2.setCeremonies(ceremoniesAgenda2);
 
         utils.createAgenda(agenda1);

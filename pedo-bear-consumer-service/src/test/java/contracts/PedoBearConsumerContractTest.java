@@ -16,24 +16,27 @@ import pedobear.Agenda;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(PactConsumerTestExt.class)
 public class PedoBearConsumerContractTest{
 
+    private static final String regex_ceremonies = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
+    private static final String regex_date = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
+    private static final int sprintID = 105;
+
     @Pact(provider = "konami-agendas-provider",consumer = "pedo-bear-consumer")
-    protected RequestResponsePact getAgendaBySprintID(PactDslWithProvider builder) {
+    public RequestResponsePact getAgendaBySprintID(PactDslWithProvider builder) {
         PactDslJsonBody body = new PactDslJsonBody()
-                .integerType("sprintId",105)
-                .stringType("date")
+                .integerType("sprintId",sprintID)
+                .stringMatcher("date",regex_date,"01/01/2022")
                 .object("ceremonies")
-                .stringMatcher("refinement","[0-9][0-9]:[0-9][0-9]","09:30")
-                .stringType("planning")
-                .stringType("lunch")
-                .stringType("retrospective")
-                .stringType("sharingsessions")
+                .stringMatcher("refinement",regex_ceremonies,"09:30")
+                .stringMatcher("planning",regex_ceremonies,"10:30")
+                .stringMatcher("lunch",regex_ceremonies,"12:00")
+                .stringMatcher("retrospective",regex_ceremonies,"14:00")
+                .stringMatcher("sharingsessions",regex_ceremonies,"15:30")
                 .closeObject()
                 .asBody();
 
@@ -53,18 +56,18 @@ public class PedoBearConsumerContractTest{
     }
 
     @Pact(provider = "konami-agendas-provider",consumer = "pedo-bear-consumer")
-    protected RequestResponsePact getAllAgendasPact(PactDslWithProvider builder) {
+    public RequestResponsePact getAllAgendasPact(PactDslWithProvider builder) {
 
         PactDslJsonBody agendasBody = new PactDslJsonBody()
                 .minArrayLike("agendas",2)
-                .integerType("sprintId")
-                .stringType("date")
+                .integerType("sprintId",sprintID)
+                .stringMatcher("date",regex_date,"01/01/2022")
                 .object("ceremonies")
-                .stringType("refinement")
-                .stringType("planning")
-                .stringType("lunch")
-                .stringType("retrospective")
-                .stringType("sharingsessions")
+                .stringMatcher("refinement",regex_ceremonies,"09:30")
+                .stringMatcher("planning",regex_ceremonies,"10:30")
+                .stringMatcher("lunch",regex_ceremonies,"12:00")
+                .stringMatcher("retrospective",regex_ceremonies,"14:00")
+                .stringMatcher("sharingsessions",regex_ceremonies,"15:30")
                 .closeObject().closeArray().asBody();
 
 

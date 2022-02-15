@@ -4,8 +4,9 @@ import java.util.*;
 
 public class AgendasDataSource {
 
-    private static Map<Integer,Agenda> agendasDataBase = new HashMap<>();
+    private static final Map<Integer,Agenda> agendasDataBase = new HashMap<>();
     static {
+
         Agenda agenda = new Agenda();
         agenda.setDescription("Konami All Day Agenda for sprint "+agenda.getSprintId());
         agenda.setDate("18/02/2050");
@@ -26,7 +27,7 @@ public class AgendasDataSource {
         ceremoniesData2.put("lunch","12:00");
         ceremoniesData2.put("retrospective","14:00");
         ceremoniesData2.put("sharingsessions","15:00");
-        agenda2.setCeremonies(ceremoniesData);
+        agenda2.setCeremonies(ceremoniesData2);
 
         agendasDataBase.put(agenda.getSprintId(),agenda);
         agendasDataBase.put(agenda2.getSprintId(),agenda2);
@@ -34,8 +35,6 @@ public class AgendasDataSource {
 
     public Agenda getAgendaFromDataBaseByID(int id)
     {
-
-        System.out.println("Getting Agenda from SprintId: "+id);
         return agendasDataBase.get(id);
     }
 
@@ -44,7 +43,7 @@ public class AgendasDataSource {
         List<Agenda> newList = new ArrayList();
 
         agendasDataBase.values().forEach(agenda -> {
-            System.out.println("Printing:"+agenda.getSprintId()+" : "+agenda.getUuid());
+            System.out.println("New agenda for list: "+agenda.getDescription()+" : "+agenda.getUuid());
             newList.add(agenda);
 
         });
@@ -60,5 +59,10 @@ public class AgendasDataSource {
         System.out.println("New agenda with: "+newAgenda.getSprintId());
         agendasDataBase.put(key,newAgenda);
 
-    }
+        agendasDataBase.values().forEach(agenda ->
+            System.out.println("actual database:"+agenda.getSprintId()+" : "+agenda.getUuid()));
+
+
+
+}
 }
