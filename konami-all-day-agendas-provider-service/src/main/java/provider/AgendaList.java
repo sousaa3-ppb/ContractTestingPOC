@@ -7,8 +7,8 @@ public class AgendaList {
     public List<Agenda> agendas;
 
     public AgendaList(List<Agenda> newAgendaList) {
-         this.agendas = newAgendaList;
+        this.agendas = newAgendaList;
 
 
-}
+    }
 }

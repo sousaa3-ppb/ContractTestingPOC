@@ -1,77 +1,77 @@
 package provider;
 
+
 import au.com.dius.pact.provider.junit.Provider;
 import au.com.dius.pact.provider.junit.State;
 import au.com.dius.pact.provider.junit.StateChangeAction;
 import au.com.dius.pact.provider.junit.loader.PactBroker;
-import au.com.dius.pact.provider.junit.target.Target;
-import au.com.dius.pact.provider.junit.target.TestTarget;
-import au.com.dius.pact.provider.spring.SpringRestPactRunner;
-import au.com.dius.pact.provider.spring.target.SpringBootHttpTarget;
-import org.junit.runner.RunWith;
+import au.com.dius.pact.provider.junit5.HttpTestTarget;
+import au.com.dius.pact.provider.junit5.PactVerificationContext;
+import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 
-@RunWith(SpringRestPactRunner.class)
 @Provider("konami-agendas-provider")
-@PactBroker(host = "localhost",port = "80")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@PactBroker(host = "localhost", port = "80")
 public class AgendaDataProviderContractTest {
+
+    @LocalServerPort
+    private int port;
 
     AgendaUtils utils = new AgendaUtils();
 
-@TestTarget
-public final Target target = new SpringBootHttpTarget();
 
-@State(value = "exists an Agenda for a given sprint",action = StateChangeAction.SETUP)
-    public Map<String,Object> createAgenda(Map<String,Object> params){
+    @BeforeEach
+    void before(PactVerificationContext context) {
+        context.setTarget(new HttpTestTarget("localhost", port));
+    }
 
-       System.out.println("Setting up an Agenda");
+    @TestTemplate
+    @ExtendWith(PactVerificationInvocationContextProvider.class)
+    void pactVerificationTestTemplate(PactVerificationContext context) {
+        context.verifyInteraction();
+    }
 
-       Map<String,Object> mapSprintID = new HashMap<>();
+    @State(value = "exists an Agenda for a given sprint", action = StateChangeAction.SETUP)
+    public Map<String, Object> createAgenda(Map<String, Object> params) {
 
-       int sprintID = utils.createAgenda();
-       mapSprintID.put("id",sprintID);
+        System.out.println("Setting up an Agenda");
+        Map<String, Object> mapSprintID = new HashMap<>();
+        int sprintID = utils.createAgenda();
+        mapSprintID.put("id", sprintID);
+        System.out.println("SprintID generated at callback provider state: " + sprintID);
+        return mapSprintID;
+    }
 
-       System.out.println("SprintID generated at callback provider state: "+sprintID);
+    @State(value = "exists an Agenda for a given sprint", action = StateChangeAction.TEARDOWN)
+    public void deleteAgenda(Map<String, Object> params) {
 
-       return mapSprintID;
-}
+        System.out.println("Deleting agenda...");
 
-@State(value = "a list of existing agendas",action = StateChangeAction.SETUP)
-    public void createAgendasList(){
+    }
 
-    System.out.println("Setting up a list of Agendas");
+    @State(value = "a list of existing agendas", action = StateChangeAction.SETUP)
+    public void createAgendasList() {
 
-        Agenda agenda1 = new Agenda();
-        agenda1.setDate("18/01/2022");
-        agenda1.setDescription("Konami All Day Agenda for sprint 1000");
-        Map <String,String> ceremoniesAgenda1 = new LinkedHashMap();
-        ceremoniesAgenda1.put("refinement","09:30");
-        ceremoniesAgenda1.put("planning","10:30");
-        ceremoniesAgenda1.put("lunch","12:00");
-        ceremoniesAgenda1.put("retrospective","14:00");
-        ceremoniesAgenda1.put("sharingsessions","15:00");
-        agenda1.setCeremonies(ceremoniesAgenda1);
+        System.out.println("Setting up a list of Agendas");
+        utils.createAgendasList();
 
-        Agenda agenda2 = new Agenda();
-        agenda2.setDate("31/01/2022");
-        agenda2.setDescription("Konami All Day Agenda for sprint 1001");
-        Map <String,String> ceremoniesAgenda2 = new LinkedHashMap();
-        ceremoniesAgenda2.put("refinement","09:30");
-        ceremoniesAgenda2.put("planning","10:30");
-        ceremoniesAgenda2.put("lunch","12:00");
-        ceremoniesAgenda2.put("retrospective","14:00");
-        ceremoniesAgenda2.put("sharingsessions","15:00");
-        agenda2.setCeremonies(ceremoniesAgenda2);
 
-        utils.createAgenda(agenda1);
-        utils.createAgenda(agenda2);
+    }
 
+    @State(value = "a list of existing agendas", action = StateChangeAction.TEARDOWN)
+    public void deleteAgendasList() {
+
+        System.out.println("Deleting a list of Agendas");
 
     }
 
