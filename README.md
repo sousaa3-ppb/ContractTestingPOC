@@ -6,6 +6,30 @@ framework.
 - Spring boot provider service: to implement contract verification tests with Pact Sprint/Junit Runners
 - Docker to spin up an image of Pact Broker to publish and retrieve pacts 
 
+# Motivations to adopt contract testing
+
+A contract is implicitly made between two parties on an integration: a consumer service and a provider service. 
+
+As a **provider** 
+I want to assure that the contracts between me and my consumers don't break
+so i can deploy safely new developments
+
+As a **consumer**
+I want to be assured that my providers still respect the contracts
+so i can deploy safely new developments 
+
+Contract testing:
+
+- Helps Providers make changes without being scared of accidentally breaking their Consumers;
+- Lets Consumers know that the APIs they consume won’t suddenly break;
+- Allows Consumers to develop against API definitions before the Provider API has actually been developed;
+- Makes integrating and testing a service in a microservice landscape easier; and
+- Serves as an efficient communication tool between Provider and Consumer teams.
+
+
+
+
+
 # CDCT Pact flow
 
 ![pactflow](/docs/pact_flow.png)

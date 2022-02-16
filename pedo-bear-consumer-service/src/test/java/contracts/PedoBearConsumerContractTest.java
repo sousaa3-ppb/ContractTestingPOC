@@ -26,7 +26,7 @@ public class PedoBearConsumerContractTest{
     private static final String regex_date = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
     private static final int sprintID = 105;
 
-    @Pact(provider = "konami-agendas-provider",consumer = "pedo-bear-consumer")
+    @Pact(consumer = "pedo-bear-consumer",provider = "konami-agendas-provider")
     public RequestResponsePact getAgendaBySprintID(PactDslWithProvider builder) {
         PactDslJsonBody body = new PactDslJsonBody()
                 .integerType("sprintId",sprintID)
@@ -55,7 +55,7 @@ public class PedoBearConsumerContractTest{
                 .toPact();
     }
 
-    @Pact(provider = "konami-agendas-provider",consumer = "pedo-bear-consumer")
+    @Pact(consumer = "pedo-bear-consumer",provider = "konami-agendas-provider")
     public RequestResponsePact getAllAgendasPact(PactDslWithProvider builder) {
 
         PactDslJsonBody agendasBody = new PactDslJsonBody()
@@ -68,7 +68,9 @@ public class PedoBearConsumerContractTest{
                 .stringMatcher("lunch",regex_ceremonies,"12:00")
                 .stringMatcher("retrospective",regex_ceremonies,"14:00")
                 .stringMatcher("sharingsessions",regex_ceremonies,"15:30")
-                .closeObject().closeArray().asBody();
+                .closeObject()
+                .closeArray()
+                .asBody();
 
 
         Map<String,String> headers = new HashMap<String,String>();
@@ -92,6 +94,14 @@ public class PedoBearConsumerContractTest{
 
         Agenda response = new KonamiAgendasProviderClient(mockServer.getUrl()).getAgenda("105");
         assertThat((response.getSprintId())).isEqualTo(105);
+        assertThat((response.getDate())).isEqualTo("01/01/2022");
+        assertThat((response.getCeremonies().get("refinement"))).isEqualTo("09:30");
+        assertThat((response.getCeremonies().get("planning"))).isEqualTo("10:30");
+        assertThat((response.getCeremonies().get("lunch"))).isEqualTo("12:00");
+        assertThat((response.getCeremonies().get("retrospective"))).isEqualTo("14:00");
+        assertThat((response.getCeremonies().get("sharingsessions"))).isEqualTo("15:30");
+
+
 
     }
 
@@ -101,6 +111,8 @@ public class PedoBearConsumerContractTest{
 
 
         AgendaList response = new KonamiAgendasProviderClient(mockServer.getUrl()).getAllAgendas();
+        assertThat((response.agendas.get(1).getSprintId())).isEqualTo(105);
+        //WIP write all assertions over this list
 
 
     }
