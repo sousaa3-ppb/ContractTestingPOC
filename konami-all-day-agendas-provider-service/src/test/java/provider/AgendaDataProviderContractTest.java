@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Provider("konami-agendas-provider")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@PactBroker(host = "localhost", port = "80")
+@PactBroker(host = "ie1-fbrpp01-pact.qa.betfair", port = "8282")
 public class AgendaDataProviderContractTest {
 
     @LocalServerPort
@@ -32,7 +32,7 @@ public class AgendaDataProviderContractTest {
 
     @BeforeEach
     void before(PactVerificationContext context) {
-        context.setTarget(new HttpTestTarget("localhost", port));
+        context.setTarget(new HttpTestTarget("localhost", 8090));
     }
 
     @TestTemplate

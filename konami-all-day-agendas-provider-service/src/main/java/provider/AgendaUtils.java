@@ -24,12 +24,14 @@ public class AgendaUtils {
         newAgenda.setDate("18/02/2022");
         newAgenda.setDescription("Konami All Day agenda for sprint " + newAgenda.getSprintId());
         Map<String, String> ceremoniesData = new LinkedHashMap<>();
-        ceremoniesData.put("refinement", "09:30");
+        ceremoniesData.put("refinement", "09_30");
         ceremoniesData.put("planning", "10:30");
         ceremoniesData.put("lunch", "09:30");
         ceremoniesData.put("retrospective", "09:30");
         ceremoniesData.put("sharingsessions", "15:00");
         ceremoniesData.put("jogatinas", "17:00");
+        ceremoniesData.put("MADONNA", "17:00");
+        ceremoniesData.put("xpto", "17:00");
         newAgenda.setCeremonies(ceremoniesData);
 
         dataSource.createAgendaOnDataSource(newAgenda);

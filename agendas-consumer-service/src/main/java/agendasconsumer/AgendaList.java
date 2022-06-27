@@ -1,4 +1,4 @@
-package pedobear;
+package agendasconsumer;
 
 import java.util.List;
 

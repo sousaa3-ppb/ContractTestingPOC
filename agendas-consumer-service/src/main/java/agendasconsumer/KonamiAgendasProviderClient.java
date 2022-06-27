@@ -1,4 +1,4 @@
-package pedobear;
+package agendasconsumer;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
@@ -22,6 +22,10 @@ public class KonamiAgendasProviderClient {
     public AgendaList getAllAgendas()
     {
         return restTemplate.getForObject(String.format("/agendas"), AgendaList.class);
+    }
+
+    public BetReport getBets(){
+       return restTemplate.getForObject("/api/FixedOddsBetReporting/v1.0/searchBets?sortDir=DESC", BetReport.class);
     }
 
 

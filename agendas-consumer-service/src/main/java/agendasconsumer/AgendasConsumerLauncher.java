@@ -1,13 +1,13 @@
-package pedobear;
+package agendasconsumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PedoBearConsumerLauncher {
+public class AgendasConsumerLauncher {
 
     public static void main(String[] args) {
-        SpringApplication.run(PedoBearConsumerLauncher.class, args);
+        SpringApplication.run(AgendasConsumerLauncher.class, args);
     }
 
 }

@@ -8,11 +8,12 @@ import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
 
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import pedobear.AgendaList;
-import pedobear.KonamiAgendasProviderClient;
-import pedobear.Agenda;
+import agendasconsumer.AgendaList;
+import agendasconsumer.KonamiAgendasProviderClient;
+import agendasconsumer.Agenda;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,13 +21,14 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(PactConsumerTestExt.class)
-public class PedoBearConsumerContractTest {
+public class AgendasConsumerContractTest {
 
     private static final String regex_ceremonies = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
     private static final String regex_date = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
     private static final int sprintID = 105;
 
-    @Pact(consumer = "pedo-bear-consumer", provider = "konami-agendas-provider")
+
+    @Pact(consumer = "agendas-consumer", provider = "konami-agendas-provider")
     public RequestResponsePact getAgendaBySprintID(PactDslWithProvider builder) {
         PactDslJsonBody body = new PactDslJsonBody()
                 .integerType("sprintId", sprintID)
@@ -38,8 +40,10 @@ public class PedoBearConsumerContractTest {
                 .stringMatcher("retrospective", regex_ceremonies, "14:00")
                 .stringMatcher("sharingsessions", regex_ceremonies, "15:30")
                 .stringMatcher("jogatinas", regex_ceremonies, "17:00")
+                .stringMatcher("xpto", regex_ceremonies, "17:00")
                 .closeObject()
                 .asBody();
+
 
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");
@@ -56,7 +60,7 @@ public class PedoBearConsumerContractTest {
                 .toPact();
     }
 
-    @Pact(consumer = "pedo-bear-consumer", provider = "konami-agendas-provider")
+    @Pact(consumer = "agendas-consumer", provider = "konami-agendas-provider")
     public RequestResponsePact getAllAgendasPact(PactDslWithProvider builder) {
 
         PactDslJsonBody agendasBody = new PactDslJsonBody()
@@ -74,6 +78,7 @@ public class PedoBearConsumerContractTest {
                 .asBody();
 
 
+
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");
 
@@ -88,7 +93,38 @@ public class PedoBearConsumerContractTest {
                 .body(agendasBody)
                 .toPact();
     }
+/*
+    @Pact(consumer = "pedo-bear-consumer", provider = "konami-agendas-provider")
+    public RequestResponsePact getAllAgendasPact(PactDslWithProvider builder) {
+        PactDslJsonBody body = new PactDslJsonBody()
+                .integerType("sprintId", sprintID)
+                .stringMatcher("date", regex_date, "01/01/2022")
+                .object("ceremonies")
+                .stringMatcher("refinement", regex_ceremonies, "09:30")
+                .stringMatcher("planning", regex_ceremonies, "10:30")
+                .stringMatcher("lunch", regex_ceremonies, "12:00")
+                .stringMatcher("retrospective", regex_ceremonies, "14:00")
+                .stringMatcher("sharingsessions", regex_ceremonies, "15:30")
+                .stringMatcher("jogatinas", regex_ceremonies, "17:00")
+                .stringMatcher("xpto", regex_ceremonies, "17:00")
+                .closeObject()
+                .asBody();
 
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Content-Type", "application/json");
+
+        return builder
+                .given("exists an Agenda for a given sprint")
+                .uponReceiving("a request to retrieve an agenda")
+                .pathFromProviderState("/agendas/sprint/${id}", "/agendas/sprint/105")
+                .method("GET")
+                .willRespondWith()
+                .status(200)
+                .headers(headers)
+                .body(body)
+                .toPact();
+    }
+*/
     @Test
     @PactTestFor(pactMethod = "getAgendaBySprintID")
     void shouldGetAgenda(MockServer mockServer) {
