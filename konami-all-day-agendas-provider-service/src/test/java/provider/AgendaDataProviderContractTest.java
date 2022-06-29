@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Provider("konami-agendas-provider")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@PactBroker(host = "ie1-fbrpp01-pact.qa.betfair", port = "8282")
+@PactBroker(host = "localhost")
 public class AgendaDataProviderContractTest {
 
     @LocalServerPort
@@ -47,7 +47,7 @@ public class AgendaDataProviderContractTest {
         System.out.println("Setting up an Agenda");
         Map<String, Object> mapSprintID = new HashMap<>();
         int sprintID = utils.createAgenda();
-        mapSprintID.put("id", sprintID);
+        mapSprintID.put("id", 300);
         System.out.println("SprintID generated at callback provider state: " + sprintID);
         return mapSprintID;
     }

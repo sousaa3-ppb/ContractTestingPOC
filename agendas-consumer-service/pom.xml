@@ -78,7 +78,7 @@
                             <artifactId>pact-jvm-provider-maven</artifactId>
                             <version>${pact.maven.plugin.version}</version>
                             <configuration>
-                                <pactBrokerUrl>http://ie1-fbrpp01-pact.qa.betfair:8282/</pactBrokerUrl>
+                                <pactBrokerUrl>http://localhost</pactBrokerUrl>
                             </configuration>
                         </plugin>
                     </plugins>

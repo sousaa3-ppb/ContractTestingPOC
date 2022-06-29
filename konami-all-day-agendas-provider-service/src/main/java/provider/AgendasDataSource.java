@@ -29,8 +29,22 @@ public class AgendasDataSource {
         ceremoniesData2.put("sharingsessions","15:00");
         agenda2.setCeremonies(ceremoniesData2);
 
+        Agenda agenda3 = new Agenda();
+        agenda3.setSprintId(300);
+        agenda3.setDescription("Konami All Day Agenda for sprint "+agenda3.getSprintId());
+        agenda3.setDate("18/02/2050");
+        Map<String,String> ceremoniesData3 = new LinkedHashMap<>();
+        ceremoniesData3.put("refinement","09:30");
+        ceremoniesData3.put("planning","10:30");
+        ceremoniesData3.put("lunch","12:00");
+        ceremoniesData3.put("retrospective","14:00");
+        ceremoniesData3.put("sharingsessions","15:00");
+        ceremoniesData3.put("jogatinas","09:30");
+        agenda3.setCeremonies(ceremoniesData3);
+
         agendasDataBase.put(agenda.getSprintId(),agenda);
         agendasDataBase.put(agenda2.getSprintId(),agenda2);
+        agendasDataBase.put(agenda3.getSprintId(),agenda3);
     }
 
     public Agenda getAgendaFromDataBaseByID(int id)

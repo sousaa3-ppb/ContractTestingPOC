@@ -18,7 +18,7 @@ As a **consumer**
 I want to be assured that my providers still respect the contracts
 so i can deploy safely new developments 
 
-Contract testing:
+Other benefits of Contract testing:
 
 - Helps Providers make changes without being scared of accidentally breaking their Consumers;
 - Lets Consumers know that the APIs they consume won’t suddenly break;
@@ -26,13 +26,23 @@ Contract testing:
 - Makes integrating and testing a service in a microservice landscape easier; and
 - Serves as an efficient communication tool between Provider and Consumer teams.
 
-
-
-
-
 # CDCT Pact flow
 
 ![pactflow](/docs/pact_flow.png)
+
+#Services 
+
+**Agendas-Consumer**
+
+This is a consumer service which consumes Konami-All-Day agendas from the Konami-all-day-provider service. In the CDCT flow
+defines programmatically through unit tests it's contract expectations on two operation of Konami-all-day-provider service.
+
+**Konami-all-day-agendas-provider** 
+
+This is a provider service which provides two operations with Konami-All-Day agendas:
+
+- agendas: retrieves all existing agendas 
+- agendas/sprint/{id}: retrieves an agenda by sprint id
 
 # Maven commands
 

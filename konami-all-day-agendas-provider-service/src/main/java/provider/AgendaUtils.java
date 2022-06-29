@@ -30,8 +30,6 @@ public class AgendaUtils {
         ceremoniesData.put("retrospective", "09:30");
         ceremoniesData.put("sharingsessions", "15:00");
         ceremoniesData.put("jogatinas", "17:00");
-        ceremoniesData.put("MADONNA", "17:00");
-        ceremoniesData.put("xpto", "17:00");
         newAgenda.setCeremonies(ceremoniesData);
 
         dataSource.createAgendaOnDataSource(newAgenda);

@@ -23,6 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(PactConsumerTestExt.class)
 public class AgendasConsumerContractTest {
 
+    KonamiAgendasProviderClient victim;
+
     private static final String regex_ceremonies = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
     private static final String regex_date = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
     private static final int sprintID = 105;
@@ -36,11 +38,10 @@ public class AgendasConsumerContractTest {
                 .object("ceremonies")
                 .stringMatcher("refinement", regex_ceremonies, "09:30")
                 .stringMatcher("planning", regex_ceremonies, "10:30")
-                .stringMatcher("lunch", regex_ceremonies, "12:00")
+                //.stringMatcher("lunch", regex_ceremonies, "12:00")
                 .stringMatcher("retrospective", regex_ceremonies, "14:00")
                 .stringMatcher("sharingsessions", regex_ceremonies, "15:30")
                 .stringMatcher("jogatinas", regex_ceremonies, "17:00")
-                .stringMatcher("xpto", regex_ceremonies, "17:00")
                 .closeObject()
                 .asBody();
 
@@ -93,48 +94,18 @@ public class AgendasConsumerContractTest {
                 .body(agendasBody)
                 .toPact();
     }
-/*
-    @Pact(consumer = "pedo-bear-consumer", provider = "konami-agendas-provider")
-    public RequestResponsePact getAllAgendasPact(PactDslWithProvider builder) {
-        PactDslJsonBody body = new PactDslJsonBody()
-                .integerType("sprintId", sprintID)
-                .stringMatcher("date", regex_date, "01/01/2022")
-                .object("ceremonies")
-                .stringMatcher("refinement", regex_ceremonies, "09:30")
-                .stringMatcher("planning", regex_ceremonies, "10:30")
-                .stringMatcher("lunch", regex_ceremonies, "12:00")
-                .stringMatcher("retrospective", regex_ceremonies, "14:00")
-                .stringMatcher("sharingsessions", regex_ceremonies, "15:30")
-                .stringMatcher("jogatinas", regex_ceremonies, "17:00")
-                .stringMatcher("xpto", regex_ceremonies, "17:00")
-                .closeObject()
-                .asBody();
 
-        Map<String, String> headers = new HashMap<String, String>();
-        headers.put("Content-Type", "application/json");
-
-        return builder
-                .given("exists an Agenda for a given sprint")
-                .uponReceiving("a request to retrieve an agenda")
-                .pathFromProviderState("/agendas/sprint/${id}", "/agendas/sprint/105")
-                .method("GET")
-                .willRespondWith()
-                .status(200)
-                .headers(headers)
-                .body(body)
-                .toPact();
-    }
-*/
     @Test
     @PactTestFor(pactMethod = "getAgendaBySprintID")
     void shouldGetAgenda(MockServer mockServer) {
 
-        Agenda response = new KonamiAgendasProviderClient(mockServer.getUrl()).getAgenda("105");
+        victim = new KonamiAgendasProviderClient(mockServer.getUrl());
+        Agenda response = victim.getAgenda("105");
         assertThat((response.getSprintId())).isEqualTo(105);
         assertThat((response.getDate())).isEqualTo("01/01/2022");
         assertThat((response.getCeremonies().get("refinement"))).isEqualTo("09:30");
         assertThat((response.getCeremonies().get("planning"))).isEqualTo("10:30");
-        assertThat((response.getCeremonies().get("lunch"))).isEqualTo("12:00");
+        //assertThat((response.getCeremonies().get("lunch"))).isEqualTo("12:00");
         assertThat((response.getCeremonies().get("retrospective"))).isEqualTo("14:00");
         assertThat((response.getCeremonies().get("sharingsessions"))).isEqualTo("15:30");
         assertThat((response.getCeremonies().get("jogatinas"))).isEqualTo("17:00");

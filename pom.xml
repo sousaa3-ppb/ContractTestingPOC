@@ -9,6 +9,6 @@
     <description>POC Contract Testing using Pact Broker docker image  2 spring boot services</description>
     <modules>
         <module>konami-all-day-agendas-provider-service</module>
-        <module>pedo-bear-consumer-service</module>
+        <module>agendas-consumer-service</module>
     </modules>
 </project>

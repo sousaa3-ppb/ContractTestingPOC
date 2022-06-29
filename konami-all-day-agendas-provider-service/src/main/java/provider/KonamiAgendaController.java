@@ -13,7 +13,7 @@ public class KonamiAgendaController {
         this.konamiAgendaService = konamiAgendaService;
     }
 
-    @GetMapping(value = "agendas/sprint/{id}")
+    @GetMapping(value = "agendas/sprint/{id}", produces="application/json")
     public Agenda getAgenda(@PathVariable int id) {
 
         System.out.println("Getting agenda for sprintId: "+id);
