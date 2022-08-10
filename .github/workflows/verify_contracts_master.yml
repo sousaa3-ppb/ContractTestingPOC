@@ -1,0 +1,73 @@
+name: Verify contract tests - Master branch
+
+on:
+  workflow_dispatch:
+    types: [pact_changed]
+
+env:
+  MVN_ARGUMENTS: -B -Djavax.net.ssl.trustStore=/etc/pki/ca-trust/extracted/java/cacerts -Dmaven.wagon.http.ssl.allowall=true
+
+jobs:
+  verify-contract-tests:
+    runs-on: self-hosted
+    strategy:
+      fail-fast: false
+      matrix:
+        mock-test-profile: [ local ]
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+          token: ${{secrets. SVC_AWS_AUTOMATION_RO_ACCESS }}
+      - name: Set up Infrastructure (Docker Compose)
+        run: |
+          curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o ./docker-compose
+          chmod +x ./docker-compose
+          ./docker-compose -f ./launcher/src/test/resources/docker/fbr-infra/docker-compose.yml up -d
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+          overwrite-settings: false
+          cache: 'maven'
+
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4
+        with:
+          maven-version: 3.8.1
+
+      - name: Set up env variables
+        run: |
+          echo "MVN_PROJ_VERSION=$(mvn $MVN_ARGUMENTS -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_ENV
+
+      - name: Compile FBR
+        run: mvn $MVN_ARGUMENTS clean install -DskipTests
+
+      - name: Run FBR Mock Launcher
+        run: mvn $MVN_ARGUMENTS -P${{ matrix.mock-test-profile }}-mock-launcher -e exec:exec -f launcher/pom.xml &
+
+      - name: Check the Launcher Health Check is up
+        uses: jtalk/url-health-check-action@v2
+        with:
+          url: http://127.0.0.1:8080/api/healthcheck/v2/summary
+          max-attempts: 60
+          retry-delay: 5s
+          retry-all: true
+
+      - name: Run verification contract tests
+        run: mvn $MVN_ARGUMENTS -f integration-tests/contract-testing/pom.xml surefire:test -Dtest="**/*ContractTestSuite.java" -Dpact.verifier.publishResults=true -Dpact.provider.branch="MASTER" -Dpact.provider.version=$MVN_PROJ_VERSION+"MASTER" -Dpact.provider.tag="MASTER"
+
+      - name: Shut down Infrastructure (Docker Compose)
+        run: ./docker-compose -f ./launcher/src/test/resources/docker/fbr-infra/docker-compose.yml down
+        if: always()
+
+      - name: Publish Contract Tests Report
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          check_name: Contract Tests Report
+          fail_on_failure: true
+          require_tests: true
+          report_paths: '**/target/surefire-reports/TEST-*.xml'
