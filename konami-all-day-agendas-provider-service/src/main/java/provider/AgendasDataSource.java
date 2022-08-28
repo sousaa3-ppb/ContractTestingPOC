@@ -39,7 +39,7 @@ public class AgendasDataSource {
         ceremoniesData3.put("lunch","12:00");
         ceremoniesData3.put("retrospective","14:00");
         ceremoniesData3.put("sharingsessions","15:00");
-        ceremoniesData3.put("jogatinas","09:30");
+        //ceremoniesData3.put("jogatinas","09:30");
         agenda3.setCeremonies(ceremoniesData3);
 
         agendasDataBase.put(agenda.getSprintId(),agenda);
