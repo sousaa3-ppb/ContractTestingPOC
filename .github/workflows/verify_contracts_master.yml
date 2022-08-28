@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-          token: 'Bearer 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'
+          token: ${{ github.token }}
 
       - name: Set up JDK 8
         uses: actions/setup-java@v2
