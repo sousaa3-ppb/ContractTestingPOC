@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-          token: 'Bearer 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'
+          token: 'Bearer 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'
 
       - name: Set up JDK 8
         uses: actions/setup-java@v2
