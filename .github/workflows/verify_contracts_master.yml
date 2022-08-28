@@ -38,7 +38,7 @@ jobs:
         run: mvn $MVN_ARGUMENTS clean install -DskipTests
 
       - name: Run Konami All Day Agendas service
-        run: mvn $MVN_ARGUMENTS -Prun -e exec:exec -f konami-all-day-agendas-provider-service/pom.xml
+        run: mvn $MVN_ARGUMENTS -Prun -e exec:exec -f konami-all-day-agendas-provider-service/pom.xml &
 
       - name: Run verification contract tests
         run: mvn $MVN_ARGUMENTS -f konami-all-day-agendas-provider-service/pom.xml surefire:test -Dtest="**/*AgendaDataProviderContractTest.java" -Dpact.verifier.publishResults=true -Dpact.provider.branch="MASTER" -Dpact.provider.version=$MVN_PROJ_VERSION+"MASTER" -Dpact.provider.tag="MASTER"
