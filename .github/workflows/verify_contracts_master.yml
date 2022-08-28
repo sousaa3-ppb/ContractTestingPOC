@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-          token: ${{secrets. SVC_AWS_AUTOMATION_RO_ACCESS }}
+          token: 'Bearer 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'
 
       - name: Set up JDK 8
         uses: actions/setup-java@v2
