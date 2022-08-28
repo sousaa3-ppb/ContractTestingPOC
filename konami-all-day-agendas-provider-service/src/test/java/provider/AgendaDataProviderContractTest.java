@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Provider("konami-agendas-provider")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@PactBroker(host = "localhost")
+@PactBroker(host = "ie1-fbrpp01-pact.qa.betfair:8282")
 public class AgendaDataProviderContractTest {
 
     @LocalServerPort
