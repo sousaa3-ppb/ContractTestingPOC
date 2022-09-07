@@ -57,7 +57,7 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
         uses: voxmedia/github-action-slack-notify-build@v1
-          with:
+        with:
             channel: konami_alerts
             status: STARTING
             color: warning
@@ -67,7 +67,7 @@ jobs:
         env:
            SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
         uses: voxmedia/github-action-slack-notify-build@v1
-           with:
+        with:
              channel: konami_alerts
              status: FAILED
              color: danger
